@@ -92,31 +92,6 @@ class IntegerType(CellType):
             raise ValueError('Invalid integer: %s' % value)
 
 
-class LongType(CellType):
-    """ An integer field. """
-    guessing_weight = 5
-    result_type = int
-
-    def cast(self, value):
-        if value in ('', None):
-            return None
-
-        try:
-            value = float(value)
-        except Exception:
-            # get rid of thousands separators
-            # e.g. "1,000"
-            return locale.atoi(value)
-
-        if value.is_integer():
-
-            if value < -9223372036854775808 or value > 9223372036854775807:
-                raise ValueError('Invalid long: %s' % value)
-            return int(value)
-        else:
-            raise ValueError('Invalid integer: %s' % value)
-
-
 class DecimalType(CellType):
     """ Decimal number, ``decimal.Decimal`` or float numbers. """
     guessing_weight = 4
@@ -269,7 +244,7 @@ class DateUtilType(CellType):
         return parser.parse(value)
 
 
-TYPES = [StringType, DecimalType, IntegerType, LongType, DateType, BoolType,
+TYPES = [StringType, DecimalType, IntegerType, DateType, BoolType,
          TimeType, CurrencyType, PercentageType]
 
 
